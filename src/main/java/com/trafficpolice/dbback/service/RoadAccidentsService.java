@@ -33,4 +33,24 @@ public class RoadAccidentsService {
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<Object[]> getAccidentStatisticsByTypeAndPeriod(String typeName, String startDate, String endDate) {
+        return repository.getAccidentStatisticsByTypeAndPeriod(typeName, startDate, endDate);
+    }
+
+    public List<String> findMostDangerousPlaces() {
+        return repository.findMostDangerousPlaces();
+    }
+
+    public List<String> findMostPopularReason() {
+        return repository.findMostPopularReason();
+    }
+
+    public List<Object[]> getDrunkDrivingAccidentsAndPercentage() {
+        return repository.getDrunkDrivingAccidentsAndPercentage();
+    }
+
+    public List<String> getWantedVehicles() {
+        return repository.getWantedVehicles();
+    }
 }
