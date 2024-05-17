@@ -29,4 +29,13 @@ public class PersonsService {
                 .map(personsMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public PersonsDTO findByTransportNumber(String transportNumber) {
+        Persons person = personsRepository.findByTransportNumber(transportNumber);
+        if (person != null) {
+            return personsMapper.toDTO(person);
+        } else {
+            return null;
+        }
+    }
 }

@@ -1,7 +1,10 @@
 package com.trafficpolice.dbback.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +36,7 @@ public class Persons {
 
     @Column(name = "apartment")
     private Integer apartment;
+
+    @OneToMany(mappedBy = "person")
+    private List<TransportNumberDirectory> transportNumbers;
 }

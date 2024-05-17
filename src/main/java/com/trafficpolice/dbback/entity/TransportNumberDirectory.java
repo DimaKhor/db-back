@@ -1,6 +1,7 @@
 package com.trafficpolice.dbback.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import jakarta.persistence.*;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class TransportNumberDirectory {
     private Colors color;
 
     @Column(name = "issue_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date issueDate;
 
     @Column(name = "engine_capacity", nullable = false)

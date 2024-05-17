@@ -33,4 +33,13 @@ public class InspectionService {
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<Integer> findTransportIdsWithFailedInspection() {
+        return repository.findTransportIdsWithFailedInspection();
+    }
+
+    public int countOwnersWithFailedInspection() {
+        List<Integer> transportIds = findTransportIdsWithFailedInspection();
+        return transportIds.size();
+    }
 }

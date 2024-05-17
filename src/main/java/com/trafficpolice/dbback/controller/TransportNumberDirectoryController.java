@@ -1,6 +1,7 @@
 package com.trafficpolice.dbback.controller;
 
 import com.trafficpolice.dbback.dto.TransportNumberDirectoryDTO;
+import com.trafficpolice.dbback.repository.TransportNumberDirectoryRepository;
 import com.trafficpolice.dbback.service.TransportNumberDirectoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +19,8 @@ import java.util.List;
 public class TransportNumberDirectoryController {
 
     private final TransportNumberDirectoryService service;
+    private final TransportNumberDirectoryRepository repository;
+
 
     @GetMapping("/transport-number/{id}")
     public ResponseEntity<TransportNumberDirectoryDTO> getTransportNumberById(@PathVariable int id) {
@@ -59,6 +62,18 @@ public class TransportNumberDirectoryController {
         try {
             List<TransportNumberDirectoryDTO> dtos = service.findByIssueDateBetween(startDate, endDate);
             return ResponseEntity.ok(dtos);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //запрос 3
+    @GetMapping("/transport-number/car-profile/{number}")
+    public ResponseEntity<Object[]> getCarProfileByNumber(@PathVariable String number) {
+        try {
+            Object[] carProfile = service.getCarProfileByNumber(number);
+            return ResponseEntity.ok(carProfile);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();

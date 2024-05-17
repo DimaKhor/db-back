@@ -19,17 +19,4 @@ public class OrganizationsMapper {
         organizationsDTO.setHeadFatherName(organization.getHeadFatherName());
         return organizationsDTO;
     }
-
-    public Organizations toEntity(OrganizationsDTO organizationDTO) {
-        Organizations organization = new Organizations();
-        organization.setId(organizationDTO.getId());
-        organization.setName(organizationDTO.getName());
-        organization.setArea(organizationDTO.getArea());
-        organization.setStreet(organizationDTO.getStreet());
-        organization.setBuilding(organizationDTO.getBuilding());
-        organization.setHeadLastName(organizationDTO.getHeadLastName());
-        organization.setHeadName(organizationDTO.getHeadName());
-        organization.setHeadFatherName(organizationDTO.getHeadFatherName());
-        return organization;
-    }
 }

@@ -5,6 +5,7 @@ import com.trafficpolice.dbback.entity.TransportNumberDirectory;
 import com.trafficpolice.dbback.mapper.TransportNumberDirectoryMapper;
 import com.trafficpolice.dbback.repository.TransportNumberDirectoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 public class TransportNumberDirectoryService {
 
     private final TransportNumberDirectoryRepository repository;
+    @Autowired
+    private InspectionService inspectionService;
     private final TransportNumberDirectoryMapper mapper;
 
     public TransportNumberDirectoryDTO findById(int id) {
@@ -49,5 +52,10 @@ public class TransportNumberDirectoryService {
         return directories.stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Object[] getCarProfileByNumber(String number) {
+        List<Integer> failedInspectionIds = inspectionService.findTransportIdsWithFailedInspection();
+        return repository.getCarProfileByNumber(number, failedInspectionIds);
     }
 }

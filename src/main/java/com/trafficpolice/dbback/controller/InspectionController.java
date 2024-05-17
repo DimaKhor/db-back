@@ -37,4 +37,18 @@ public class InspectionController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //запрос 4
+    @GetMapping("/failed-inspection")
+    public ResponseEntity<List<Integer>> getTransportIdsWithFailedInspection() {
+        List<Integer> transportIds = service.findTransportIdsWithFailedInspection();
+        return ResponseEntity.ok(transportIds);
+    }
+
+    //запрос 4
+    @GetMapping("/failed-inspection-count-owners")
+    public ResponseEntity<Integer> countOwnersWithFailedInspection() {
+        int count = service.countOwnersWithFailedInspection();
+        return ResponseEntity.ok(count);
+    }
 }

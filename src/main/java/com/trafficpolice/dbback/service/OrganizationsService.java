@@ -7,6 +7,7 @@ import com.trafficpolice.dbback.repository.OrganizationsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,5 +29,13 @@ public class OrganizationsService {
         return organizationsList.stream()
                 .map(organizationsMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<String> findOrganizationNamesBySeriesOrPeriod(String series, LocalDate startDate, LocalDate endDate) {
+        return organizationsRepository.findOrganizationNamesBySeriesOrPeriod(series, startDate, endDate);
+    }
+
+    public int countOrganizationNamesBySeriesOrPeriod(String series, LocalDate startDate, LocalDate endDate) {
+        return organizationsRepository.countOrganizationNamesBySeriesOrPeriod(series, startDate, endDate);
     }
 }
