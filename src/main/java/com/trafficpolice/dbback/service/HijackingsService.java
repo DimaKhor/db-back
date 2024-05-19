@@ -52,4 +52,29 @@ public class HijackingsService {
     public List<String> findMostStolenBrandNames() {
         return repository.findMostStolenBrandNames();
     }
+
+    public HijackingsDTO addHijacking(HijackingsDTO dto) {
+        Hijackings hijackings = mapper.toEntity(dto);
+        hijackings = repository.save(hijackings);
+        return mapper.toDTO(hijackings);
+    }
+
+    public HijackingsDTO updateHijacking(int id, HijackingsDTO dto) {
+        if (repository.existsById(id)) {
+            Hijackings hijackings = mapper.toEntity(dto);
+            hijackings.setId(id);
+            hijackings = repository.save(hijackings);
+            return mapper.toDTO(hijackings);
+        } else {
+            throw new RuntimeException("Hijacking not found with id: " + id);
+        }
+    }
+
+    public void deleteHijacking(int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new RuntimeException("Hijacking not found with id: " + id);
+        }
+    }
 }

@@ -3,10 +3,9 @@ package com.trafficpolice.dbback.controller;
 import com.trafficpolice.dbback.dto.AccidentTypesDTO;
 import com.trafficpolice.dbback.service.AccidentTypesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +33,36 @@ public class AccidentTypesController {
             return ResponseEntity.ok(dtos);
         } catch (RuntimeException e) {
             e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/accidenttypes")
+    public ResponseEntity<?> createAccidentType(@RequestBody AccidentTypesDTO dto) {
+        try {
+            AccidentTypesDTO createdDto = service.save(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Failed to create accident type: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/accidenttypes/{id}")
+    public ResponseEntity<?> updateAccidentType(@PathVariable int id, @RequestBody AccidentTypesDTO dto) {
+        try {
+            AccidentTypesDTO updatedDto = service.update(id, dto);
+            return ResponseEntity.ok(updatedDto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Failed to update accident type with id " + id + ": " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/accidenttypes/{id}")
+    public ResponseEntity<Void> deleteAccidentType(@PathVariable int id) {
+        try {
+            service.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }

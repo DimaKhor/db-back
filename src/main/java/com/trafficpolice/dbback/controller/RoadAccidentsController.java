@@ -3,11 +3,9 @@ package com.trafficpolice.dbback.controller;
 import com.trafficpolice.dbback.dto.RoadAccidentsDTO;
 import com.trafficpolice.dbback.service.RoadAccidentsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -73,5 +71,38 @@ public class RoadAccidentsController {
     @GetMapping("/wanted-vehicles")
     public ResponseEntity<List<String>> getWantedVehicles() {
         return ResponseEntity.ok(service.getWantedVehicles());
+    }
+
+    @PostMapping("/roadaccidents")
+    public ResponseEntity<RoadAccidentsDTO> addRoadAccident(@RequestBody RoadAccidentsDTO dto) {
+        try {
+            RoadAccidentsDTO savedDto = service.addRoadAccident(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedDto);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/roadaccidents/{id}")
+    public ResponseEntity<RoadAccidentsDTO> updateRoadAccident(@PathVariable int id, @RequestBody RoadAccidentsDTO dto) {
+        try {
+            RoadAccidentsDTO updatedDto = service.updateRoadAccident(id, dto);
+            return ResponseEntity.ok(updatedDto);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/roadaccidents/{id}")
+    public ResponseEntity<Void> deleteRoadAccident(@PathVariable int id) {
+        try {
+            service.deleteRoadAccident(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -53,4 +53,29 @@ public class RoadAccidentsService {
     public List<String> getWantedVehicles() {
         return repository.getWantedVehicles();
     }
+
+    public RoadAccidentsDTO addRoadAccident(RoadAccidentsDTO dto) {
+        RoadAccidents accidents = mapper.toEntity(dto);
+        accidents = repository.save(accidents);
+        return mapper.toDTO(accidents);
+    }
+
+    public RoadAccidentsDTO updateRoadAccident(int id, RoadAccidentsDTO dto) {
+        if (repository.existsById(id)) {
+            RoadAccidents accidents = mapper.toEntity(dto);
+            accidents.setId(id);
+            accidents = repository.save(accidents);
+            return mapper.toDTO(accidents);
+        } else {
+            throw new RuntimeException("Road accidents not found with id: " + id);
+        }
+    }
+
+    public void deleteRoadAccident(int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new RuntimeException("Road accidents not found with id: " + id);
+        }
+    }
 }

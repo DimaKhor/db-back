@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.swing.event.ListDataEvent;
 import java.util.Date;
@@ -93,5 +90,38 @@ public class HijackingsController {
     @GetMapping("/most_stolen_brand")
     public List<String> getMostStolenBrand() {
         return service.findMostStolenBrandNames();
+    }
+
+    @PostMapping("/hijackings")
+    public ResponseEntity<HijackingsDTO> addHijacking(@RequestBody HijackingsDTO dto) {
+        try {
+            HijackingsDTO savedDto = service.addHijacking(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedDto);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/hijackings/{id}")
+    public ResponseEntity<HijackingsDTO> updateHijacking(@PathVariable int id, @RequestBody HijackingsDTO dto) {
+        try {
+            HijackingsDTO updatedDto = service.updateHijacking(id, dto);
+            return ResponseEntity.ok(updatedDto);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/hijackings/{id}")
+    public ResponseEntity<Void> deleteHijacking(@PathVariable int id) {
+        try {
+            service.deleteHijacking(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 }

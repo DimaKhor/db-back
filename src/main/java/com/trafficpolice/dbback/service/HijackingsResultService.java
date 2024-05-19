@@ -33,4 +33,30 @@ public class HijackingsResultService {
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public HijackingsResultDTO create(HijackingsResultDTO dto) {
+        HijackingsResult hijackingsResult = mapper.toEntity(dto);
+        HijackingsResult savedHijackingsResult = repository.save(hijackingsResult);
+        return mapper.toDTO(savedHijackingsResult);
+    }
+
+    public HijackingsResultDTO update(int id, HijackingsResultDTO dto) {
+        Optional<HijackingsResult> optionalHijackingsResult = repository.findById(id);
+        if (optionalHijackingsResult.isPresent()) {
+            HijackingsResult hijackingsResult = optionalHijackingsResult.get();
+            hijackingsResult.setResultName(dto.getResultName());
+            HijackingsResult updatedHijackingsResult = repository.save(hijackingsResult);
+            return mapper.toDTO(updatedHijackingsResult);
+        } else {
+            throw new RuntimeException("Hijacking result not found with id: " + id);
+        }
+    }
+
+    public void deleteById(int id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete hijacking result with id " + id + ": " + e.getMessage());
+        }
+    }
 }

@@ -6,9 +6,7 @@ import com.trafficpolice.dbback.dto.BrandsDTO;
 import com.trafficpolice.dbback.service.BrandsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +26,23 @@ public class BrandsController {
     public ResponseEntity<List<BrandsDTO>> getAllBrands() {
         List<BrandsDTO> brandsDTOList = brandsService.findAll();
         return ResponseEntity.ok(brandsDTOList);
+    }
+
+    @PostMapping("/brands")
+    public ResponseEntity<BrandsDTO> createBrand(@RequestBody BrandsDTO brandDTO) {
+        BrandsDTO createdBrandDTO = brandsService.save(brandDTO);
+        return ResponseEntity.ok(createdBrandDTO);
+    }
+
+    @PutMapping("/brands/{id}")
+    public ResponseEntity<BrandsDTO> updateBrand(@PathVariable int id, @RequestBody BrandsDTO brandDTO) {
+        BrandsDTO updatedBrandDTO = brandsService.update(id, brandDTO);
+        return ResponseEntity.ok(updatedBrandDTO);
+    }
+
+    @DeleteMapping("/brands/{id}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable int id) {
+        brandsService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

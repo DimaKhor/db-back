@@ -5,11 +5,9 @@ import com.trafficpolice.dbback.repository.TransportNumberDirectoryRepository;
 import com.trafficpolice.dbback.service.TransportNumberDirectoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -77,6 +75,36 @@ public class TransportNumberDirectoryController {
         } catch (RuntimeException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/transport-number")
+    public ResponseEntity<?> createTransportNumber(@RequestBody TransportNumberDirectoryDTO dto) {
+        try {
+            TransportNumberDirectoryDTO createdDTO = service.create(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Failed to create transport number: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/transport-number/{id}")
+    public ResponseEntity<?> updateTransportNumber(@PathVariable int id, @RequestBody TransportNumberDirectoryDTO dto) {
+        try {
+            TransportNumberDirectoryDTO updatedDTO = service.update(id, dto);
+            return ResponseEntity.ok(updatedDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Failed to update transport number with id " + id + ": " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/transport-number/{id}")
+    public ResponseEntity<?> deleteTransportNumber(@PathVariable int id) {
+        try {
+            service.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Failed to delete transport number with id " + id + ": " + e.getMessage());
         }
     }
 }

@@ -33,4 +33,26 @@ public class TransportTypesService {
                 .map(transportTypesMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public TransportTypesDTO save(TransportTypesDTO transportTypesDTO) {
+        TransportTypes transportTypes = transportTypesMapper.toEntity(transportTypesDTO);
+        TransportTypes savedTransportTypes = transportTypesRepository.save(transportTypes);
+        return transportTypesMapper.toDTO(savedTransportTypes);
+    }
+
+    public TransportTypesDTO update(int id, TransportTypesDTO transportTypesDTO) {
+        TransportTypes existingTransportTypes = transportTypesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transport type not found with id: " + id));
+        existingTransportTypes.setName(transportTypesDTO.getName());
+        TransportTypes updatedTransportTypes = transportTypesRepository.save(existingTransportTypes);
+        return transportTypesMapper.toDTO(updatedTransportTypes);
+    }
+
+    public void deleteById(int id) {
+        if (transportTypesRepository.existsById(id)) {
+            transportTypesRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Transport type not found with id: " + id);
+        }
+    }
 }

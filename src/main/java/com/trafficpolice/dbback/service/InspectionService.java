@@ -42,4 +42,29 @@ public class InspectionService {
         List<Integer> transportIds = findTransportIdsWithFailedInspection();
         return transportIds.size();
     }
+
+    public InspectionDTO addInspection(InspectionDTO dto) {
+        Inspection inspection = mapper.toEntity(dto);
+        inspection = repository.save(inspection);
+        return mapper.toDTO(inspection);
+    }
+
+    public InspectionDTO updateInspection(int id, InspectionDTO dto) {
+        if (repository.existsById(id)) {
+            Inspection inspection = mapper.toEntity(dto);
+            inspection.setId(id);
+            inspection = repository.save(inspection);
+            return mapper.toDTO(inspection);
+        } else {
+            throw new RuntimeException("Inspection not found with id: " + id);
+        }
+    }
+
+    public void deleteInspection(int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new RuntimeException("Inspection not found with id: " + id);
+        }
+    }
 }

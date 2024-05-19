@@ -13,4 +13,11 @@ public class AccidentTypesMapper {
         dto.setName(accidentTypes.getName());
         return dto;
     }
+
+    public AccidentTypes toEntity(AccidentTypesDTO dto) {
+        AccidentTypes accidentTypes = new AccidentTypes();
+        accidentTypes.setId(dto.getId());
+        accidentTypes.setName(dto.getName());
+        return accidentTypes;
+    }
 }

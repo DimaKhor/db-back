@@ -5,10 +5,7 @@ import com.trafficpolice.dbback.service.OrganizationsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,9 +30,9 @@ public class OrganizationsController {
 
     //запрос 1
 
-    // /organizations/by-series-or-period?series=ABC
-    // /organizations/by-series-or-period?startDate=2022-01-01&endDate=2022-01-10
-    // /organizations/by-series-or-period?series=ABC&startDate=2022-01-01&endDate=2022-01-10
+    // http://localhost:8080/organizations/by-series-or-period?series=ABC
+    // http://localhost:8080/organizations/by-series-or-period?startDate=2022-01-01&endDate=2022-01-10
+    // http://localhost:8080/organizations/by-series-or-period?series=ABC&startDate=2022-01-01&endDate=2022-01-10
     @GetMapping("/organizations/by-series-or-period")
     public ResponseEntity<List<String>> getOrganizationNamesBySeriesOrPeriod(
             @RequestParam(required = false) String series,
@@ -54,5 +51,23 @@ public class OrganizationsController {
     ) {
         int count = organizationsService.countOrganizationNamesBySeriesOrPeriod(series, startDate, endDate);
         return ResponseEntity.ok(count);
+    }
+
+    @PostMapping("/organizations")
+    public ResponseEntity<OrganizationsDTO> addOrganization(@RequestBody OrganizationsDTO organizationDTO) {
+        OrganizationsDTO createdOrganization = organizationsService.addOrganization(organizationDTO);
+        return ResponseEntity.ok(createdOrganization);
+    }
+
+    @DeleteMapping("/organizations/{id}")
+    public ResponseEntity<Void> deleteOrganization(@PathVariable int id) {
+        organizationsService.deleteOrganization(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/organizations/{id}")
+    public ResponseEntity<OrganizationsDTO> updateOrganization(@PathVariable int id, @RequestBody OrganizationsDTO organizationDTO) {
+        OrganizationsDTO updatedOrganization = organizationsService.updateOrganization(id, organizationDTO);
+        return ResponseEntity.ok(updatedOrganization);
     }
 }

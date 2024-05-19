@@ -13,4 +13,11 @@ public class HijackingsResultMapper {
         dto.setResultName(hijackingsResult.getResultName());
         return dto;
     }
+
+    public HijackingsResult toEntity(HijackingsResultDTO dto) {
+        HijackingsResult hijackingsResult = new HijackingsResult();
+        hijackingsResult.setId(dto.getId());
+        hijackingsResult.setResultName(dto.getResultName());
+        return hijackingsResult;
+    }
 }

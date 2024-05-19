@@ -3,12 +3,11 @@
 package com.trafficpolice.dbback.controller;
 
 import com.trafficpolice.dbback.dto.ColorsDTO;
+import com.trafficpolice.dbback.entity.Colors;
 import com.trafficpolice.dbback.service.ColorsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +27,22 @@ public class ColorsController {
     public ResponseEntity<List<ColorsDTO>> getAllColors() {
         List<ColorsDTO> colorsDTOList = colorsService.findAll();
         return ResponseEntity.ok(colorsDTOList);
+    }
+
+    @PostMapping("/colors")
+    public ResponseEntity<ColorsDTO> addColor(@RequestBody ColorsDTO colorsDTO) {
+        ColorsDTO addedColor = colorsService.addColor(colorsDTO);
+        return ResponseEntity.ok(addedColor);
+    }
+
+    @DeleteMapping("/colors/{id}")
+    public ResponseEntity<Void> deleteColor(@PathVariable int id) {
+        colorsService.deleteColorById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/colors/{id}")
+    public Colors updateColor(@PathVariable int id, @RequestBody Colors color) {
+        return colorsService.updateColor(id, color.getName());
     }
 }

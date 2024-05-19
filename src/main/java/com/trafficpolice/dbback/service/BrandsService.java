@@ -29,4 +29,24 @@ public class BrandsService {
                 .map(brandsMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public BrandsDTO save(BrandsDTO brandDTO) {
+        Brands brand = brandsMapper.toEntity(brandDTO);
+        Brands savedBrand = brandsRepository.save(brand);
+        return brandsMapper.toDTO(savedBrand);
+    }
+
+    public BrandsDTO update(int id, BrandsDTO brandDTO) {
+        Brands existingBrand = brandsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
+
+        existingBrand.setName(brandDTO.getName());
+
+        Brands updatedBrand = brandsRepository.save(existingBrand);
+        return brandsMapper.toDTO(updatedBrand);
+    }
+
+    public void deleteById(int id) {
+        brandsRepository.deleteById(id);
+    }
 }

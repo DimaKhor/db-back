@@ -33,4 +33,26 @@ public class AccidentTypesService {
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public AccidentTypesDTO save(AccidentTypesDTO dto) {
+        AccidentTypes accidentTypes = mapper.toEntity(dto);
+        accidentTypes = repository.save(accidentTypes);
+        return mapper.toDTO(accidentTypes);
+    }
+
+    public AccidentTypesDTO update(int id, AccidentTypesDTO dto) {
+        Optional<AccidentTypes> optionalAccidentTypes = repository.findById(id);
+        if (optionalAccidentTypes.isPresent()) {
+            AccidentTypes accidentTypes = optionalAccidentTypes.get();
+            accidentTypes.setName(dto.getName());
+            accidentTypes = repository.save(accidentTypes);
+            return mapper.toDTO(accidentTypes);
+        } else {
+            throw new RuntimeException("Accident type not found with id: " + id);
+        }
+    }
+
+    public void deleteById(int id) {
+        repository.deleteById(id);
+    }
 }

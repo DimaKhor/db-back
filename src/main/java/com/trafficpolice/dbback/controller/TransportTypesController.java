@@ -4,9 +4,7 @@ import com.trafficpolice.dbback.dto.TransportTypesDTO;
 import com.trafficpolice.dbback.service.TransportTypesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,23 @@ public class TransportTypesController {
     public ResponseEntity<List<TransportTypesDTO>> getAllTransportTypes() {
         List<TransportTypesDTO> dtos = transportTypesService.findAll();
         return ResponseEntity.ok(dtos);
+    }
+
+    @PostMapping("/transporttypes")
+    public ResponseEntity<TransportTypesDTO> createTransportType(@RequestBody TransportTypesDTO transportTypesDTO) {
+        TransportTypesDTO createdTransportTypesDTO = transportTypesService.save(transportTypesDTO);
+        return ResponseEntity.ok(createdTransportTypesDTO);
+    }
+
+    @PutMapping("/transporttypes/{id}")
+    public ResponseEntity<TransportTypesDTO> updateTransportType(@PathVariable int id, @RequestBody TransportTypesDTO transportTypesDTO) {
+        TransportTypesDTO updatedTransportTypesDTO = transportTypesService.update(id, transportTypesDTO);
+        return ResponseEntity.ok(updatedTransportTypesDTO);
+    }
+
+    @DeleteMapping("/transporttypes/{id}")
+    public ResponseEntity<Void> deleteTransportType(@PathVariable int id) {
+        transportTypesService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
