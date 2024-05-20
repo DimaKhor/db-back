@@ -66,7 +66,7 @@ public class HijackingsResultController {
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to delete hijackings result with id " + id + ": " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

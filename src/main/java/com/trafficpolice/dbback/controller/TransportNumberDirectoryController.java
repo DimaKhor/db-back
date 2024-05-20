@@ -82,7 +82,7 @@ public class TransportNumberDirectoryController {
             TransportNumberDirectoryDTO createdDTO = service.create(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create transport number: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class TransportNumberDirectoryController {
             TransportNumberDirectoryDTO updatedDTO = service.update(id, dto);
             return ResponseEntity.ok(updatedDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update transport number with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class TransportNumberDirectoryController {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete transport number with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

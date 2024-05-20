@@ -33,7 +33,7 @@ public class TransportTypesController {
             TransportTypesDTO createdTransportTypesDTO = transportTypesService.save(transportTypesDTO);
             return ResponseEntity.ok(createdTransportTypesDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create transport type: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ public class TransportTypesController {
             TransportTypesDTO updatedTransportTypesDTO = transportTypesService.update(id, transportTypesDTO);
             return ResponseEntity.ok(updatedTransportTypesDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update transport type with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class TransportTypesController {
             transportTypesService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete transport type with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

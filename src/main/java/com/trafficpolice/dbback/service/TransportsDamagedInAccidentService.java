@@ -87,6 +87,8 @@ public class TransportsDamagedInAccidentService {
         return mapper.toDTO(updatedEntity);
     }
 
+
+
     public void deleteTransportsDamagedInAccident(int accidentId, int transportId) {
         TransportsDamagedInAccidentId id = new TransportsDamagedInAccidentId(accidentId, transportId);
         repository.deleteById(id);

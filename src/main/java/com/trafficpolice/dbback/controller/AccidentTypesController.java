@@ -43,7 +43,7 @@ public class AccidentTypesController {
             AccidentTypesDTO createdDto = service.save(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create accident type: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class AccidentTypesController {
             AccidentTypesDTO updatedDto = service.update(id, dto);
             return ResponseEntity.ok(updatedDto);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update accident type with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class AccidentTypesController {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete accident type with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

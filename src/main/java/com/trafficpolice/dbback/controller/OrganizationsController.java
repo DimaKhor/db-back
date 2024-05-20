@@ -60,7 +60,7 @@ public class OrganizationsController {
             OrganizationsDTO createdOrganization = organizationsService.addOrganization(organizationDTO);
             return ResponseEntity.ok(createdOrganization);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add organization: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -70,7 +70,7 @@ public class OrganizationsController {
             organizationsService.deleteOrganization(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete organization with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ public class OrganizationsController {
             OrganizationsDTO updatedOrganization = organizationsService.updateOrganization(id, organizationDTO);
             return ResponseEntity.ok(updatedOrganization);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update organization with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
