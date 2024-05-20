@@ -35,24 +35,33 @@ public class AccidentTypesService {
     }
 
     public AccidentTypesDTO save(AccidentTypesDTO dto) {
-        AccidentTypes accidentTypes = mapper.toEntity(dto);
-        accidentTypes = repository.save(accidentTypes);
-        return mapper.toDTO(accidentTypes);
+        try {
+            AccidentTypes accidentTypes = mapper.toEntity(dto);
+            accidentTypes = repository.save(accidentTypes);
+            return mapper.toDTO(accidentTypes);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save accident type: " + e.getMessage(), e);
+        }
     }
 
     public AccidentTypesDTO update(int id, AccidentTypesDTO dto) {
-        Optional<AccidentTypes> optionalAccidentTypes = repository.findById(id);
-        if (optionalAccidentTypes.isPresent()) {
-            AccidentTypes accidentTypes = optionalAccidentTypes.get();
+        try {
+            AccidentTypes accidentTypes = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Accident type not found with id: " + id));
             accidentTypes.setName(dto.getName());
             accidentTypes = repository.save(accidentTypes);
             return mapper.toDTO(accidentTypes);
-        } else {
-            throw new RuntimeException("Accident type not found with id: " + id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update accident type with id " + id + ": " + e.getMessage(), e);
         }
     }
 
     public void deleteById(int id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete accident type with id " + id + ": " + e.getMessage(), e);
+        }
     }
+
 }

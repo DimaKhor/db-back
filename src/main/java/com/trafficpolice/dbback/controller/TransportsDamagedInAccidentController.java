@@ -4,9 +4,7 @@ import com.trafficpolice.dbback.dto.TransportsDamagedInAccidentDTO;
 import com.trafficpolice.dbback.service.TransportsDamagedInAccidentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,5 +51,38 @@ public class TransportsDamagedInAccidentController {
     public ResponseEntity<List<TransportsDamagedInAccidentDTO>> getAllTransportsDamagedInAccidents() {
         List<TransportsDamagedInAccidentDTO> dtos = service.findAll();
         return ResponseEntity.ok(dtos);
+    }
+
+    @PostMapping("/transports-damaged-in-accident")
+    public ResponseEntity<TransportsDamagedInAccidentDTO> addTransportsDamagedInAccident(@RequestBody TransportsDamagedInAccidentDTO dto) {
+        try {
+            TransportsDamagedInAccidentDTO createdDto = service.addTransportsDamagedInAccident(dto);
+            return ResponseEntity.ok(createdDto);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/transports-damaged-in-accident/{accidentId}/{transportId}")
+    public ResponseEntity<TransportsDamagedInAccidentDTO> updateTransportsDamagedInAccident(@PathVariable int accidentId, @PathVariable int transportId, @RequestBody TransportsDamagedInAccidentDTO dto) {
+        try {
+            TransportsDamagedInAccidentDTO updatedDto = service.updateTransportsDamagedInAccident(accidentId, transportId, dto);
+            return ResponseEntity.ok(updatedDto);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/transports-damaged-in-accident/{accidentId}/{transportId}")
+    public ResponseEntity<Void> deleteTransportsDamagedInAccident(@PathVariable int accidentId, @PathVariable int transportId) {
+        try {
+            service.deleteTransportsDamagedInAccident(accidentId, transportId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 }

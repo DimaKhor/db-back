@@ -1,7 +1,6 @@
 package com.trafficpolice.dbback.service;
 
 import com.trafficpolice.dbback.dto.HijackingsDTO;
-import com.trafficpolice.dbback.entity.Brands;
 import com.trafficpolice.dbback.entity.Hijackings;
 import com.trafficpolice.dbback.mapper.HijackingsMapper;
 import com.trafficpolice.dbback.repository.HijackingsRepository;

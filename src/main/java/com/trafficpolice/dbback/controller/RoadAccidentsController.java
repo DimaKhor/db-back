@@ -96,13 +96,12 @@ public class RoadAccidentsController {
     }
 
     @DeleteMapping("/roadaccidents/{id}")
-    public ResponseEntity<Void> deleteRoadAccident(@PathVariable int id) {
+    public ResponseEntity<?> deleteRoadAccident(@PathVariable int id) {
         try {
             service.deleteRoadAccident(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

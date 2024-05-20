@@ -3,6 +3,7 @@ package com.trafficpolice.dbback.controller;
 import com.trafficpolice.dbback.dto.PersonsDTO;
 import com.trafficpolice.dbback.service.PersonsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,8 +56,7 @@ public class PersonsController {
             PersonsDTO createdPerson = personsService.save(personsDTO);
             return ResponseEntity.ok(createdPerson);
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to create person: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create person: " + e.getMessage());
         }
     }
 
@@ -66,8 +66,7 @@ public class PersonsController {
             PersonsDTO updatedPerson = personsService.update(id, personsDTO);
             return ResponseEntity.ok(updatedPerson);
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to update person with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update person with id " + id + ": " + e.getMessage());
         }
     }
 
@@ -77,8 +76,7 @@ public class PersonsController {
             personsService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to delete person with id " + id + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete person with id " + id + ": " + e.getMessage());
         }
     }
 }

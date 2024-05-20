@@ -1,10 +1,9 @@
-// BrandsController.java
-
 package com.trafficpolice.dbback.controller;
 
 import com.trafficpolice.dbback.dto.BrandsDTO;
 import com.trafficpolice.dbback.service.BrandsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,20 +28,32 @@ public class BrandsController {
     }
 
     @PostMapping("/brands")
-    public ResponseEntity<BrandsDTO> createBrand(@RequestBody BrandsDTO brandDTO) {
-        BrandsDTO createdBrandDTO = brandsService.save(brandDTO);
-        return ResponseEntity.ok(createdBrandDTO);
+    public ResponseEntity<?> createBrand(@RequestBody BrandsDTO brandDTO) {
+        try {
+            BrandsDTO createdBrandDTO = brandsService.save(brandDTO);
+            return ResponseEntity.ok(createdBrandDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @PutMapping("/brands/{id}")
-    public ResponseEntity<BrandsDTO> updateBrand(@PathVariable int id, @RequestBody BrandsDTO brandDTO) {
-        BrandsDTO updatedBrandDTO = brandsService.update(id, brandDTO);
-        return ResponseEntity.ok(updatedBrandDTO);
+    public ResponseEntity<?> updateBrand(@PathVariable int id, @RequestBody BrandsDTO brandDTO) {
+        try {
+            BrandsDTO updatedBrandDTO = brandsService.update(id, brandDTO);
+            return ResponseEntity.ok(updatedBrandDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/brands/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable int id) {
-        brandsService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteBrand(@PathVariable int id) {
+        try {
+            brandsService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }

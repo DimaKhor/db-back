@@ -12,9 +12,4 @@ public class ColorsDTO {
 
     public ColorsDTO() {
     }
-
-    public ColorsDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

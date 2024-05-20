@@ -10,9 +10,4 @@ public class AccidentTypesDTO {
 
     public AccidentTypesDTO() {
     }
-
-    public AccidentTypesDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

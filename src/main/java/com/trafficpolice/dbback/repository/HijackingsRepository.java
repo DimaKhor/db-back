@@ -1,6 +1,5 @@
 package com.trafficpolice.dbback.repository;
 
-import com.trafficpolice.dbback.entity.Brands;
 import com.trafficpolice.dbback.entity.Hijackings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

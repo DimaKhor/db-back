@@ -10,6 +10,4 @@ public interface PersonsRepository extends JpaRepository<Persons, Integer> {
     @Query("SELECT p FROM Persons p JOIN p.transportNumbers tnd WHERE tnd.number = :number")
     Persons findByTransportNumber(@Param("number") String number);
 
-    @Query("SELECT p.lastname, p.name, p.fathername, p.city, p.street FROM Persons p JOIN p.transportNumbers tnd WHERE tnd.number = :number")
-    Object[] findOwnerDetailsByTransportNumber(@Param("number") String number);
 }

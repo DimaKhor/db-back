@@ -40,15 +40,20 @@ public class PersonsService {
     }
 
     public PersonsDTO save(PersonsDTO personsDTO) {
-        Persons person = personsMapper.toEntity(personsDTO);
-        person = personsRepository.save(person);
-        return personsMapper.toDTO(person);
+        try {
+            Persons person = personsMapper.toEntity(personsDTO);
+            person = personsRepository.save(person);
+            return personsMapper.toDTO(person);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save person: " + e.getMessage(), e);
+        }
     }
 
     public PersonsDTO update(int id, PersonsDTO personsDTO) {
-        Optional<Persons> existingPerson = personsRepository.findById(id);
-        if (existingPerson.isPresent()) {
-            Persons person = existingPerson.get();
+        try {
+            Persons person = personsRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Person not found with id: " + id));
+
             person.setLastname(personsDTO.getLastname());
             person.setName(personsDTO.getName());
             person.setFathername(personsDTO.getFathername());
@@ -58,12 +63,16 @@ public class PersonsService {
             person.setApartment(personsDTO.getApartment());
             person = personsRepository.save(person);
             return personsMapper.toDTO(person);
-        } else {
-            throw new RuntimeException("Person not found with id: " + id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update person with id " + id + ": " + e.getMessage(), e);
         }
     }
 
     public void deleteById(int id) {
-        personsRepository.deleteById(id);
+        try {
+            personsRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete person with id " + id + ": " + e.getMessage(), e);
+        }
     }
 }

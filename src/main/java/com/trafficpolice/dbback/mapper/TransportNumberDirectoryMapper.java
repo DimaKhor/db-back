@@ -56,13 +56,12 @@ public class TransportNumberDirectoryMapper {
         directory.setBrand(brandsRepository.findById(dto.getBrandId()).orElse(null));
         directory.setColor(colorsRepository.findById(dto.getColorId()).orElse(null));
 
-        // Преобразование строки в объект Date
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date issueDate = dateFormat.parse(dto.getIssueDate());
             directory.setIssueDate(issueDate);
         } catch (ParseException e) {
-            e.printStackTrace(); // или можно обработать исключение и выбросить новое исключение с понятным сообщением
+            e.printStackTrace();
         }
 
         directory.setEngineCapacity(dto.getEngineCapacity());

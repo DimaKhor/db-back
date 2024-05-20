@@ -1,7 +1,6 @@
 package com.trafficpolice.dbback.controller;
 
 import com.trafficpolice.dbback.dto.HijackingsDTO;
-import com.trafficpolice.dbback.entity.Brands;
 import com.trafficpolice.dbback.service.HijackingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.event.ListDataEvent;
 import java.util.Date;
 import java.util.List;
 

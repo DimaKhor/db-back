@@ -55,35 +55,46 @@ public class TransportNumberDirectoryService {
 
     // Метод для создания записи
     public TransportNumberDirectoryDTO create(TransportNumberDirectoryDTO dto) {
-        TransportNumberDirectory entity = mapper.toEntity(dto);
-        TransportNumberDirectory savedEntity = repository.save(entity);
-        return mapper.toDTO(savedEntity);
+        try {
+            TransportNumberDirectory entity = mapper.toEntity(dto);
+            TransportNumberDirectory savedEntity = repository.save(entity);
+            return mapper.toDTO(savedEntity);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create transport number: " + e.getMessage(), e);
+        }
     }
 
-    // Метод для обновления записи
     public TransportNumberDirectoryDTO update(int id, TransportNumberDirectoryDTO dto) {
-        Optional<TransportNumberDirectory> optionalEntity = repository.findById(id);
-        TransportNumberDirectory entity = optionalEntity.orElseThrow(() -> new RuntimeException("Transport number directory not found with id: " + id));
-        entity.setTransportType(mapper.toEntity(dto).getTransportType());
-        entity.setPerson(mapper.toEntity(dto).getPerson());
-        entity.setOrganization(mapper.toEntity(dto).getOrganization());
-        entity.setBrand(mapper.toEntity(dto).getBrand());
-        entity.setColor(mapper.toEntity(dto).getColor());
-        entity.setIssueDate(mapper.toEntity(dto).getIssueDate());
-        entity.setEngineCapacity(mapper.toEntity(dto).getEngineCapacity());
-        entity.setEngineId(mapper.toEntity(dto).getEngineId());
-        entity.setChassisId(mapper.toEntity(dto).getChassisId());
-        entity.setCoachbuilderId(mapper.toEntity(dto).getCoachbuilderId());
-        entity.setNumber(mapper.toEntity(dto).getNumber());
-        TransportNumberDirectory updatedEntity = repository.save(entity);
-        return mapper.toDTO(updatedEntity);
+        try {
+            TransportNumberDirectory entity = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Transport number directory not found with id: " + id));
+            entity.setTransportType(mapper.toEntity(dto).getTransportType());
+            entity.setPerson(mapper.toEntity(dto).getPerson());
+            entity.setOrganization(mapper.toEntity(dto).getOrganization());
+            entity.setBrand(mapper.toEntity(dto).getBrand());
+            entity.setColor(mapper.toEntity(dto).getColor());
+            entity.setIssueDate(mapper.toEntity(dto).getIssueDate());
+            entity.setEngineCapacity(mapper.toEntity(dto).getEngineCapacity());
+            entity.setEngineId(mapper.toEntity(dto).getEngineId());
+            entity.setChassisId(mapper.toEntity(dto).getChassisId());
+            entity.setCoachbuilderId(mapper.toEntity(dto).getCoachbuilderId());
+            entity.setNumber(mapper.toEntity(dto).getNumber());
+            TransportNumberDirectory updatedEntity = repository.save(entity);
+            return mapper.toDTO(updatedEntity);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update transport number with id " + id + ": " + e.getMessage(), e);
+        }
     }
 
     public void deleteById(int id) {
         try {
-            repository.deleteById(id);
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+            } else {
+                throw new RuntimeException("Transport number not found with id: " + id);
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to delete transport number with id " + id + ": " + e.getMessage());
+            throw new RuntimeException("Failed to delete transport number with id " + id + ": " + e.getMessage(), e);
         }
     }
 }

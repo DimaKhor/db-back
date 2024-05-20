@@ -4,6 +4,7 @@ import com.trafficpolice.dbback.dto.OrganizationsDTO;
 import com.trafficpolice.dbback.service.OrganizationsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,20 +55,33 @@ public class OrganizationsController {
     }
 
     @PostMapping("/organizations")
-    public ResponseEntity<OrganizationsDTO> addOrganization(@RequestBody OrganizationsDTO organizationDTO) {
-        OrganizationsDTO createdOrganization = organizationsService.addOrganization(organizationDTO);
-        return ResponseEntity.ok(createdOrganization);
+    public ResponseEntity<?> addOrganization(@RequestBody OrganizationsDTO organizationDTO) {
+        try {
+            OrganizationsDTO createdOrganization = organizationsService.addOrganization(organizationDTO);
+            return ResponseEntity.ok(createdOrganization);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add organization: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/organizations/{id}")
-    public ResponseEntity<Void> deleteOrganization(@PathVariable int id) {
-        organizationsService.deleteOrganization(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteOrganization(@PathVariable int id) {
+        try {
+            organizationsService.deleteOrganization(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete organization with id " + id + ": " + e.getMessage());
+        }
     }
 
     @PutMapping("/organizations/{id}")
-    public ResponseEntity<OrganizationsDTO> updateOrganization(@PathVariable int id, @RequestBody OrganizationsDTO organizationDTO) {
-        OrganizationsDTO updatedOrganization = organizationsService.updateOrganization(id, organizationDTO);
-        return ResponseEntity.ok(updatedOrganization);
+    public ResponseEntity<?> updateOrganization(@PathVariable int id, @RequestBody OrganizationsDTO organizationDTO) {
+        try {
+            OrganizationsDTO updatedOrganization = organizationsService.updateOrganization(id, organizationDTO);
+            return ResponseEntity.ok(updatedOrganization);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update organization with id " + id + ": " + e.getMessage());
+        }
     }
+
 }

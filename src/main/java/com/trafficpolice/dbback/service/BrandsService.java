@@ -31,22 +31,33 @@ public class BrandsService {
     }
 
     public BrandsDTO save(BrandsDTO brandDTO) {
-        Brands brand = brandsMapper.toEntity(brandDTO);
-        Brands savedBrand = brandsRepository.save(brand);
-        return brandsMapper.toDTO(savedBrand);
+        try {
+            Brands brand = brandsMapper.toEntity(brandDTO);
+            Brands savedBrand = brandsRepository.save(brand);
+            return brandsMapper.toDTO(savedBrand);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save brand: " + e.getMessage(), e);
+        }
     }
 
     public BrandsDTO update(int id, BrandsDTO brandDTO) {
-        Brands existingBrand = brandsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
+        try {
+            Brands existingBrand = brandsRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
 
-        existingBrand.setName(brandDTO.getName());
-
-        Brands updatedBrand = brandsRepository.save(existingBrand);
-        return brandsMapper.toDTO(updatedBrand);
+            existingBrand.setName(brandDTO.getName());
+            Brands updatedBrand = brandsRepository.save(existingBrand);
+            return brandsMapper.toDTO(updatedBrand);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update brand with id " + id + ": " + e.getMessage(), e);
+        }
     }
 
     public void deleteById(int id) {
-        brandsRepository.deleteById(id);
+        try {
+            brandsRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete brand with id " + id + ": " + e.getMessage(), e);
+        }
     }
 }

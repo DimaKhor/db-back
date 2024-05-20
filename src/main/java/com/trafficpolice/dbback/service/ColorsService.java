@@ -33,19 +33,35 @@ public class ColorsService {
     }
 
     public ColorsDTO addColor(ColorsDTO colorsDTO) {
-        Colors colors = colorsMapper.toEntity(colorsDTO);
-        Colors savedColor = colorsRepository.save(colors);
-        return colorsMapper.toDTO(savedColor);
+        try {
+            Colors colors = colorsMapper.toEntity(colorsDTO);
+            Colors savedColor = colorsRepository.save(colors);
+            return colorsMapper.toDTO(savedColor);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to add color: " + e.getMessage(), e);
+        }
     }
 
     public void deleteColorById(int id) {
-        colorsRepository.deleteById(id);
+        try {
+            if (!colorsRepository.existsById(id)) {
+                throw new RuntimeException("Color with id " + id + " not found");
+            }
+            colorsRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete color: " + e.getMessage(), e);
+        }
     }
 
     @Transactional
     public Colors updateColor(int id, String name) {
-        Colors color = colorsRepository.findById(id).orElseThrow(() -> new RuntimeException("Color not found"));
-        color.setName(name);
-        return colorsRepository.save(color);
+        try {
+            Colors color = colorsRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Color not found"));
+            color.setName(name);
+            return colorsRepository.save(color);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update color: " + e.getMessage(), e);
+        }
     }
 }

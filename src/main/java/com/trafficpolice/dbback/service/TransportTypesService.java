@@ -35,24 +35,36 @@ public class TransportTypesService {
     }
 
     public TransportTypesDTO save(TransportTypesDTO transportTypesDTO) {
-        TransportTypes transportTypes = transportTypesMapper.toEntity(transportTypesDTO);
-        TransportTypes savedTransportTypes = transportTypesRepository.save(transportTypes);
-        return transportTypesMapper.toDTO(savedTransportTypes);
+        try {
+            TransportTypes transportTypes = transportTypesMapper.toEntity(transportTypesDTO);
+            TransportTypes savedTransportTypes = transportTypesRepository.save(transportTypes);
+            return transportTypesMapper.toDTO(savedTransportTypes);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save transport type: " + e.getMessage(), e);
+        }
     }
 
     public TransportTypesDTO update(int id, TransportTypesDTO transportTypesDTO) {
-        TransportTypes existingTransportTypes = transportTypesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transport type not found with id: " + id));
-        existingTransportTypes.setName(transportTypesDTO.getName());
-        TransportTypes updatedTransportTypes = transportTypesRepository.save(existingTransportTypes);
-        return transportTypesMapper.toDTO(updatedTransportTypes);
+        try {
+            TransportTypes existingTransportTypes = transportTypesRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Transport type not found with id: " + id));
+            existingTransportTypes.setName(transportTypesDTO.getName());
+            TransportTypes updatedTransportTypes = transportTypesRepository.save(existingTransportTypes);
+            return transportTypesMapper.toDTO(updatedTransportTypes);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update transport type with id " + id + ": " + e.getMessage(), e);
+        }
     }
 
     public void deleteById(int id) {
-        if (transportTypesRepository.existsById(id)) {
-            transportTypesRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Transport type not found with id: " + id);
+        try {
+            if (transportTypesRepository.existsById(id)) {
+                transportTypesRepository.deleteById(id);
+            } else {
+                throw new RuntimeException("Transport type not found with id: " + id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete transport type with id " + id + ": " + e.getMessage(), e);
         }
     }
 }
